@@ -25,17 +25,15 @@ rule split_fasta_by_length:
     input:
         fasta_file="{prefix}_chr1_cov_20.fasta"
     output:
-        processed_fasta="reads_{length_start}-{length_end}.fasta"
-    params:
-        prefix=config["prefix"]
+        processed_fasta="{prefix}_reads_{length_start}-{length_end}.fasta"
     shell:
         """
-        test_seperation.py {input.fasta_file} {output.processed_fasta}
+        python test_seperation.py {input.fasta_file} {wildcards.length_start} {wildcards.length_end} {output.processed_fasta}
         """
         
 rule align_ref:
     input:
-        fasta="reads_{length_start}-{length_end}.fasta"
+        fasta="{prefix}_reads_{length_start}-{length_end}.fasta"
     output:
         sam="{prefix}_{length_start}-{length_end}_minimap_aligned.sam"
     shell:
@@ -89,7 +87,7 @@ rule sniffles_to_bed:
     output:
         "{prefix}_{length_start}-{length_end}_sniffles.bed"
     shell:
-        r"""
+        """
         awk -F '\t' '!/^#/ {{split($8,a,";"); for(i in a){{if(a[i] ~ /END=/){{split(a[i],b,"="); print $1 "\t" $2 "\t" b[2]}}}}}}' "{input}" > "{output}"
         """
 
