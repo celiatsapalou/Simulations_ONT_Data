@@ -7,8 +7,8 @@ rule sim_SVs:
         fasta="{prefix}_invs_sim.fasta",
         bed="{prefix}_invs_sim.fasta.bed"
     shell:
-        """ 
-        ./SURVIVOR simSV ref_chr1.fa parameter_file 0.1 1 {output.fasta} 
+        """
+        ./SURVIVOR simSV ref_chr1.fa parameter_file 0.1 1 {output.fasta}
         mv {output.fasta}.fasta {output.fasta}
         """
 
@@ -18,7 +18,7 @@ rule sim_reads:
     output:
         fasta_out="{prefix}_chr1_cov_20.fasta"
     shell:
-        "./SURVIVOR simreads {input.fasta} /g/korbel2/tsapalou/SURVIVOR-master/NA12878_nano_error_profile_bwa.txt 20 {output.fasta_out}"
+        "./SURVIVOR simreads {input.fasta} /g/korbel2/tsapalou/SURVIVOR-master/NA12878_nano_error_profile_bwa.txt 500 {output.fasta_out}"
 
 
 rule split_fasta_by_length:
@@ -28,9 +28,9 @@ rule split_fasta_by_length:
         processed_fasta="{prefix}_reads_{length_start}-{length_end}.fasta"
     shell:
         """
-        python test_seperation.py {input.fasta_file} {wildcards.length_start} {wildcards.length_end} {output.processed_fasta}
+        ~/mambaforge/bin/python test_cov_20.py {input.fasta_file} {wildcards.length_start} {wildcards.length_end} {output.processed_fasta}
         """
-        
+
 rule align_ref:
     input:
         fasta="{prefix}_reads_{length_start}-{length_end}.fasta"
@@ -63,6 +63,7 @@ rule index_bam:
     shell:
         "samtools index {input}"
 
+
 rule run_sniffles:
     input:
         bam="{prefix}_{length_start}-{length_end}_minimap_sorted.bam",
@@ -87,7 +88,7 @@ rule sniffles_to_bed:
     output:
         "{prefix}_{length_start}-{length_end}_sniffles.bed"
     shell:
-        """
+        r"""
         awk -F '\t' '!/^#/ {{split($8,a,";"); for(i in a){{if(a[i] ~ /END=/){{split(a[i],b,"="); print $1 "\t" $2 "\t" b[2]}}}}}}' "{input}" > "{output}"
         """
 
