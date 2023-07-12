@@ -18,7 +18,7 @@ rule sim_reads:
     output:
         fasta_out="{prefix}_chr1_cov_20.fasta"
     shell:
-        "./SURVIVOR simreads {input.fasta} /g/korbel2/tsapalou/SURVIVOR-master/NA12878_nano_error_profile_bwa.txt 500 {output.fasta_out}"
+        "./SURVIVOR simreads {input.fasta} /g/korbel2/tsapalou/SURVIVOR-master/NA12878_nano_error_profile_bwa.txt 20 {output.fasta_out}"
 
 
 rule split_fasta_by_length:
@@ -28,7 +28,7 @@ rule split_fasta_by_length:
         processed_fasta="{prefix}_reads_{length_start}-{length_end}.fasta"
     shell:
         """
-        ~/mambaforge/bin/python test_cov_20.py {input.fasta_file} {wildcards.length_start} {wildcards.length_end} {output.processed_fasta}
+        ~/mambaforge/bin/python split_reads.py {input.fasta_file} {wildcards.length_start} {wildcards.length_end} {output.processed_fasta}
         """
 
 rule align_ref:
