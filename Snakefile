@@ -34,6 +34,7 @@ rule sim_reads:
         simread_param = 20
     shell:
         "scripts/SURVIVOR simreads {input.fasta} {input.survivor_config} {params.simread_param} {output.fasta_out}"
+        
 
 rule split_fasta_by_length:
     input:
