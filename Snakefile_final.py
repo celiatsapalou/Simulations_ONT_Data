@@ -29,6 +29,7 @@ rule error_profile:
     shell:
          "awk -v min={wildcards.length_start} -v max={wildcards.length_end} 'BEGIN{{OFS=FS=\"\t\"}} NR==1{{print $0; next}} NR<min{{$2=0; print $0}} NR>=min && NR<=max{{$2=(NR-min)/(max-min); print $0}} NR>max{{$2=1; print $0}}' {input} > {output}"
 
+
 # simulate adjacent insertions/deletions to inversions
 rule sim_mutations_R:
     input:
