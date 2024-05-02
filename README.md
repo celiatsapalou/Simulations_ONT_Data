@@ -4,14 +4,14 @@
 This project utilizes a Snakefile to simulate Oxford Nanopore Technologies (ONT) data on a genome mutated with small inversions. The objective is to compare various genome mappers (NGMLR vs. minimap2) and inversion callers (Sniffles vs. Delly) to identify the optimal approach for detecting genomic inversions under 1kb.
 
 ### System requirement 
-- Snakemake
+- Snakemake 7.32.4 (or higher)
 - Python 3.10.8
 - SURVIVOR (https://github.com/fritzsedlazeck/SURVIVOR)
 - R 4.2.0 or higher
 - bedtools
 - samtools
-- sniffles
-- delly
+- Sniffles2
+- Delly
 
 ## Input/Output of the pipeline
 
