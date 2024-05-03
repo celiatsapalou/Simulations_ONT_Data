@@ -13,7 +13,7 @@ This project utilizes a Snakefile to simulate Oxford Nanopore Technologies (ONT)
 - Sniffles2
 - Delly
 
-## Input/Output of the pipeline
+## Reproduction instructions - Input/Output of the pipeline
 
 ### 1) Example input data
 The `data_simulation` folder contains example data that can be used as an input to run SURVIVOR:
